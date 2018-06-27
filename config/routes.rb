@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root 'pairings#index'
   get 'pairings/index'
 
   get 'pairings/generate'
