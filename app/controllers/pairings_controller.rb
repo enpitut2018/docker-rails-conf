@@ -6,7 +6,9 @@ class PairingsController < ApplicationController
       participants = [*1..number]
       if params[:missing] then
         params[:missing].split(",").each do |missing_number|
-          participants.delete(missing_number.to_i)
+          if missing_number =~ /^[0-9]+$/ then
+            participants.delete(missing_number.to_i)
+          end
         end
       end
       paring(participants)
