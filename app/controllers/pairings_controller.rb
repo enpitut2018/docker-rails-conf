@@ -4,6 +4,11 @@ class PairingsController < ApplicationController
     if params[:number] then
       number = params[:number].to_i
       participants = [*1..number]
+      if params[:missing] then
+        params[:missing].split(",").each do |missing_number|
+          participants.delete(missing_number.to_i)
+        end
+      end
       paring(participants)
     end
   end

@@ -4,7 +4,8 @@
 </div>
 
 <%= form_tag '/pairings/index', method: :get do %>
-  参加者数: <%= text_field_tag :number  %>
+  参加者数：<%= text_field_tag :number %><br/>
+  欠番リスト：<%= text_field_tag :missing %>
   <%= submit_tag "Pairing" %>
 <% end %>
 <table>
