@@ -2,11 +2,15 @@ class PairingsController < ApplicationController
   def index
     @pairs = []
     if params[:number] then
+      @parameters = {}
       number = params[:number].to_i
+      @parameters[:number] = number 
       participants = [*1..number]
       if params[:missing] then
+        @parameters[:missing] = []
         params[:missing].split(",").each do |missing_number|
           if missing_number =~ /^[0-9]+$/ then
+            @parameters[:missing].push(missing_number)
             participants.delete(missing_number.to_i)
           end
         end

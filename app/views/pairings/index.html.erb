@@ -9,6 +9,12 @@
   欠番リスト：<%= text_field_tag :missing %>
   <%= submit_tag "Pairing" %>
 <% end %>
+<div id="parameters">
+  <% if @parameters then %>
+    参加者数：<%= @parameters[:number] %>, 
+    欠番リスト：<%= @parameters[:missing].join(",") %>
+  <% end %>
+</div>
 <table>
 <% @pairs.each do |pair| %>
   <tr>
