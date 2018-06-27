@@ -1,11 +1,14 @@
 class PairingsController < ApplicationController
   def index
-   participants = [*1..31]
-    paring(participants)
+    @pairs = []
+    if params[:number] then
+      number = params[:number].to_i
+      participants = [*1..number]
+      paring(participants)
+    end
   end
 
   def paring(participants)
-    @pairs = []
     participants.shuffle.each_slice(2) do |x, y|
       @pairs.push [x,y]
     end

@@ -2,6 +2,11 @@
 <div id="description">
   ランダムにペアプログラミングの組を作ります
 </div>
+
+<%= form_tag '/pairings/index', method: :get do %>
+  参加者数: <%= text_field_tag :number  %>
+  <%= submit_tag "Pairing" %>
+<% end %>
 <table>
 <% @pairs.each do |pair| %>
   <tr>
