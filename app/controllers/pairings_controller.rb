@@ -1,9 +1,17 @@
 class PairingsController < ApplicationController
   def index
-    users = [*1..30]
+   participants = [*1..31]
+    paring(participants)
+  end
+
+  def paring(participants)
     @pairs = []
-    users.shuffle.each_slice(2) do |x, y|
+    participants.shuffle.each_slice(2) do |x, y|
       @pairs.push [x,y]
+    end
+    if participants.length % 2 == 1 then
+      @pairs[-2].push @pairs[-1][0]
+      @pairs.pop
     end
     @pairs.sort_by! { |pair|
       pair[0]

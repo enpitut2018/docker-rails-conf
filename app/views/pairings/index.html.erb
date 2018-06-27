@@ -5,7 +5,9 @@
 <table>
 <% @pairs.each do |pair| %>
   <tr>
-    <td><%=pair[0]%></td><td><%=pair[1]%></td>
+  <% pair.each do |p| %>
+    <td><%= p %></td>
+  <% end %>
   </tr>
 <% end %>
 </table>
