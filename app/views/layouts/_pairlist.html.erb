@@ -1,0 +1,12 @@
+
+<table>
+<% if pairs then %>
+   <% pairs.each do |pair| %>
+     <tr>
+     <% pair.each do |p| %>
+       <td><%= p %></td>
+     <% end %>
+     </tr>
+   <%  end %>
+<% end %>
+</table>

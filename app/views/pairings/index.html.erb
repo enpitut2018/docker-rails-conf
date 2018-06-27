@@ -4,24 +4,16 @@
   参加者数と欠番リスト（あれば。カンマ区切りで）を入力してください。
 </div>
 
-<%= form_tag '/pairings/index', method: :get do %>
+<%= form_tag pairings_index_path, method: :get do %>
   参加者数：<%= text_field_tag :number %><br/>
   欠番リスト：<%= text_field_tag :missing %>
   <%= submit_tag "Pairing" %>
 <% end %>
 <div id="parameters">
-  <% if @parameters then %>
-    参加者数：<%= @parameters[:number] %>, 
-    欠番リスト：<%= @parameters[:missing].join(",") %>
+  <% if @data[:parameters] then %>
+    <%= render 'layouts/parameters', parameters: @data[:parameters] %>
+  <%= link_to "Save", pairings_save_path, class: 'btn btn-default' %>
   <% end %>
 </div>
-<table>
-<% @pairs.each do |pair| %>
-  <tr>
-  <% pair.each do |p| %>
-    <td><%= p %></td>
-  <% end %>
-  </tr>
-<% end %>
-</table>
+<%= render 'layouts/pairlist',  pairs: @data[:pairs] %>
 

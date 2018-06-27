@@ -1,0 +1,12 @@
+<h1>Coderetreat for Girls #2 Pairing</h1>
+<div id="description">
+  保存されたPairingです。
+</div>
+
+<div id="parameters">
+  <% if @data[:parameters] then %>
+    <%= render 'layouts/parameters', parameters: @data[:parameters] %>
+  <% end %>
+</div>
+<%= render 'layouts/pairlist',  pairs: @data[:pairs] %>
+
