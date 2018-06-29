@@ -40,7 +40,11 @@ class PairingsController < ApplicationController
 
   def save
     if session[:data] then
-      name = SecureRandom.urlsafe_base64(8)
+      if params[:name] then
+        name = params[:name]
+      else
+        name = SecureRandom.urlsafe_base64(8)
+      end
       savedata = PairingLog.new(name:name, data:session[:data].to_json)
       savedata.save
       flash.now[:success] = "The pairing data is saved to "+root_url(only_path: false) + "pairings/show/"+name
