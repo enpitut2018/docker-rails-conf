@@ -47,7 +47,7 @@ class PairingsController < ApplicationController
       end
       savedata = PairingLog.new(name:name, data:session[:data].to_json)
       savedata.save
-      flash.now[:success] = "The pairing data is saved to "+root_url(only_path: false) + "pairings/show/"+name
+      flash.now[:success] = "The pairing data is saved to "+root_url(only_path: false) + name
       @data = session[:data].with_indifferent_access
       render "show"
     end
