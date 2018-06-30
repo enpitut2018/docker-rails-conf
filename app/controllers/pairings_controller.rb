@@ -56,7 +56,7 @@ class PairingsController < ApplicationController
 
   def show
     if params[:id] then
-      log = PairingLog.find_by(name: params[:id])
+      log = PairingLog.where(name: params[:id]).order(created_at: :desc).first
       if log then
         @data = JSON.parse(log.data).with_indifferent_access
         logger.debug(@data)
