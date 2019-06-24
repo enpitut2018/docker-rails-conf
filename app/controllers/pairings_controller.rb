@@ -1,4 +1,5 @@
 require "securerandom"
+require 'csv'
 
 class PairingsController < ApplicationController
   def index
@@ -44,11 +45,12 @@ class PairingsController < ApplicationController
     nonmentors_shfl = (participants - mentors).shuffle
     mentors_shfl = mentors.shuffle
 
-    [mentors.length,mentors.length].min.times {
+    [mentors_shfl.length,nonmentors_shfl.length].min.times {
       pairs.push [nonmentors_shfl.shift,mentors_shfl.shift]
     }
     
     rest = participants - pairs.flatten
+    puts rest
 
     rest.shuffle.each_slice(2) do |x, y|
       pairs.push [x,y]
@@ -95,12 +97,21 @@ class PairingsController < ApplicationController
   def generate
   end
 
-  def pair
+  def pair    
     @data = {}
-    participants = [1,3,4,5,6,7,8,9,10]
-    mentors = [1,4,5,9]
-
-    @data[:pairs] = pairing_with_mentors(participants,mentors)    
-
+    participants = []
+    mentors = []
+    if params[:file] 
+      if params[:file].content_type.downcase != "text/csv"
+        flash[:error] = "CSVファイルをアップロードしてください"
+        render
+      end
+      CSV.foreach(params[:file].path, headers: true) do |row|
+        id = row[0].to_i
+        participants.push id
+        mentors.push id if row[1]=="1"
+      end
+      @data[:pairs] = pairing_with_mentors(participants,mentors)    
+    end
   end
 end

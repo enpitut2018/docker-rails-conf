@@ -1,8 +1,14 @@
 <h1>Coderetreat for Girls #2 Pairing</h1>
 <div id="description">
   ランダムにペアプログラミングの組を作ります。<br/>
-  参加者数と欠番リスト（あれば。カンマ区切りで）を入力してください。
+  参加者・メンター・不参加の別をCSVファイルでアップしてください。
 </div>
+
+<%= form_with url: pairings_pair_path, id: "upLoad", local: true do |f| %>
+  <%= f.file_field :file , id:"elmFile", onchange: 'selectFile()'%>
+<% end %>
+
+<%= @mentors %>
 
 <%= render 'layouts/pairlist',  pairs: @data[:pairs] %>
 
