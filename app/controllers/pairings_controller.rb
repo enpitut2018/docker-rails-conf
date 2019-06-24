@@ -2,42 +2,6 @@ require "securerandom"
 require 'csv'
 
 class PairingsController < ApplicationController
-  def index
-    @data = {}
-    if params[:number] then
-      parameters = {}
-      number = params[:number].to_i
-      parameters[:number] = number 
-      participants = [*1..number]
-      if params[:missing] then
-        parameters[:missing] = []
-        params[:missing].split(",").each do |missing_number|
-          if missing_number =~ /^[0-9]+$/ then
-            parameters[:missing].push(missing_number)
-            participants.delete(missing_number.to_i)
-          end
-        end
-      end
-      @data[:pairs] = pairing(participants)
-      @data[:parameters] = parameters
-    end
-    session[:data] = @data
-  end
-
-  def pairing(participants)
-    pairs = []
-    participants.shuffle.each_slice(2) do |x, y|
-      pairs.push [x,y]
-    end
-    if participants.length % 2 == 1 then
-      pairs[-2].push pairs[-1][0]
-      pairs.pop
-    end
-    pairs.sort_by! { |pair|
-      pair[0]
-    }
-    return pairs
-  end
 
   def pairing_with_mentors(participants,mentors)
     pairs = []
@@ -68,10 +32,10 @@ class PairingsController < ApplicationController
 
   def save
     if session[:data] then
-      if params[:name] then
-        name = params[:name]
-      else
+      if params[:name].blank?
         name = SecureRandom.urlsafe_base64(8)
+      else
+        name = params[:name]
       end
       savedata = PairingLog.new(name:name, data:session[:data].to_json)
       savedata.save
