@@ -17,13 +17,13 @@ class PairingsController < ApplicationController
           end
         end
       end
-      @data[:pairs] = paring(participants)
+      @data[:pairs] = pairing(participants)
       @data[:parameters] = parameters
     end
     session[:data] = @data
   end
 
-  def paring(participants)
+  def pairing(participants)
     pairs = []
     participants.shuffle.each_slice(2) do |x, y|
       pairs.push [x,y]
@@ -37,6 +37,32 @@ class PairingsController < ApplicationController
     }
     return pairs
   end
+
+  def pairing_with_mentors(participants,mentors)
+    pairs = []
+
+    nonmentors_shfl = (participants - mentors).shuffle
+    mentors_shfl = mentors.shuffle
+
+    [mentors.length,mentors.length].min.times {
+      pairs.push [nonmentors_shfl.shift,mentors_shfl.shift]
+    }
+    
+    rest = participants - pairs.flatten
+
+    rest.shuffle.each_slice(2) do |x, y|
+      pairs.push [x,y]
+    end
+    if rest.length % 2 == 1 then
+      pairs[-2].push pairs[-1][0]
+      pairs.pop
+    end
+    pairs.sort_by! { |pair|
+      pair[0]
+    }
+    return pairs
+  end
+
 
   def save
     if session[:data] then
@@ -67,5 +93,14 @@ class PairingsController < ApplicationController
   end
 
   def generate
+  end
+
+  def pair
+    @data = {}
+    participants = [1,3,4,5,6,7,8,9,10]
+    mentors = [1,4,5,9]
+
+    @data[:pairs] = pairing_with_mentors(participants,mentors)    
+
   end
 end
