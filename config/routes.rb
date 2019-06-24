@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root 'pairings#index'
+  root 'pairings#pair'
 
   get 'pairings/index'
   post 'pairings/index'
