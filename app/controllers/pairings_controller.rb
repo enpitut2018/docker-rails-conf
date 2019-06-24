@@ -14,10 +14,13 @@ class PairingsController < ApplicationController
     }
     
     rest = participants - pairs.flatten
-    puts rest
 
     rest.shuffle.each_slice(2) do |x, y|
-      pairs.push [x,y].sort
+      if y!=nil
+        pairs.push [x,y].sort
+      else
+        pairs.push [x,y]
+      end
     end
     if rest.length % 2 == 1 then
       pairs[-2].push pairs[-1][0]
@@ -71,7 +74,10 @@ class PairingsController < ApplicationController
         render
       end
       CSV.foreach(params[:file].path, headers: true) do |row|
+        next if row[0].blank?
         id = row[0].to_i
+        next if id==0 #to_iは不正な値を0にして返す。IDは1以上の整数なので0の場合はおかしな行と判定
+        puts id
         unless row[2]=="1"
           participants.push id
           mentors.push id if row[1]=="1"
