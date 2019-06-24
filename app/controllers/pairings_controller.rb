@@ -46,14 +46,14 @@ class PairingsController < ApplicationController
     mentors_shfl = mentors.shuffle
 
     [mentors_shfl.length,nonmentors_shfl.length].min.times {
-      pairs.push [nonmentors_shfl.shift,mentors_shfl.shift]
+      pairs.push [nonmentors_shfl.shift,mentors_shfl.shift].sort
     }
     
     rest = participants - pairs.flatten
     puts rest
 
     rest.shuffle.each_slice(2) do |x, y|
-      pairs.push [x,y]
+      pairs.push [x,y].sort
     end
     if rest.length % 2 == 1 then
       pairs[-2].push pairs[-1][0]
@@ -108,8 +108,10 @@ class PairingsController < ApplicationController
       end
       CSV.foreach(params[:file].path, headers: true) do |row|
         id = row[0].to_i
-        participants.push id
-        mentors.push id if row[1]=="1"
+        unless row[2]=="1"
+          participants.push id
+          mentors.push id if row[1]=="1"
+        end
       end
       @data[:pairs] = pairing_with_mentors(participants,mentors)    
     end
