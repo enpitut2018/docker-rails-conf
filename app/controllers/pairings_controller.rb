@@ -113,5 +113,6 @@ class PairingsController < ApplicationController
       end
       @data[:pairs] = pairing_with_mentors(participants,mentors)    
     end
+    session[:data] = @data    
   end
 end
